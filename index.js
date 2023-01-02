@@ -10,7 +10,10 @@ const { v4: uuidv4 } = require("uuid");
 app.use(urlencoded({ extended: true }));
 //menerima json
 app.use(json());
-
+//app.use((cors){
+//origin:['channa.com'],
+// });//install cors
+// app.use(cors());//ketolak
 app.use("/api/v1", router); //versi aplikasi kita/prefiks
 
 //endpoint

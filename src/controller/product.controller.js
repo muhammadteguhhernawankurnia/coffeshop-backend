@@ -3,7 +3,7 @@ const productModel = require("../model/product.model");
 const productController = {
   get: (req, res) => {
     return productModel
-      .get()
+      .get(req.query)
       .then((result) => {
         return res.status(200).send({ message: "success", data: result });
       })
