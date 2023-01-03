@@ -87,8 +87,6 @@ const productModel = {
     });
   },
 
-  // update put eksplorasi sendiri
-  //   update: (req, res) => {},
   remove: (id) => {
     return new Promise((resolve, reject) => {
       db.query(`DELETE from products WHERE id ='${id}'`, (err, result) => {
