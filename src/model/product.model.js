@@ -2,13 +2,14 @@ const db = require("../../helper/connection");
 const { v4: uuidv4 } = require("uuid");
 
 const productModel = {
-  query: (queryParams, sortType = "asc", limit = 5) => {
+  query: (queryParams, sortType = "asc", limit = 5, offset = 0) => {
+    //default data if postman zero data, show data offset 5
     if (queryParams.search && queryParams.cat) {
       return `WHERE title LIKE '%${queryParams.search}%' AND category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit}`;
     } else if (queryParams.search || queryParams.cat) {
       return `WHERE title LIKE '%${queryParams.search}%' OR category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit}`;
     } else {
-      return `ORDER BY title ${sortType} LIMIT ${limit}`;
+      return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`; // add offset pagination but not clear
     }
   },
   //get biasanya butuh filter-filter
@@ -16,10 +17,11 @@ const productModel = {
     console.log(queryParams);
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * from products ${this.query(
+        `SELECT * FROM products ${this.query(
           queryParams,
           queryParams.sortBy,
-          queryParams.limit
+          queryParams.limit,
+          queryParams.page //add pagination
         )}`,
         (err, result) => {
           if (err) {
