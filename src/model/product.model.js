@@ -5,9 +5,9 @@ const productModel = {
   query: (queryParams, sortType = "asc", limit = 5, offset = 0) => {
     //default data if postman zero data, show data offset 5
     if (queryParams.search && queryParams.cat) {
-      return `WHERE title LIKE '%${queryParams.search}%' AND category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit}`;
+      return `WHERE title LIKE '%${queryParams.search}%' AND category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`;
     } else if (queryParams.search || queryParams.cat) {
-      return `WHERE title LIKE '%${queryParams.search}%' OR category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit}`;
+      return `WHERE title LIKE '%${queryParams.search}%' OR category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`;
     } else {
       return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`; // add offset pagination but not clear
     }
@@ -15,6 +15,7 @@ const productModel = {
   //get biasanya butuh filter-filter
   get: function (queryParams) {
     console.log(queryParams);
+
     return new Promise((resolve, reject) => {
       db.query(
         `SELECT * FROM products ${this.query(

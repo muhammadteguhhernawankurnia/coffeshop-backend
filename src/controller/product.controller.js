@@ -1,7 +1,7 @@
 const productModel = require("../model/product.model");
 
 const productController = {
-  get: function getAllProducts(req, res) {
+  get: (req, res) => {
     return productModel
       .get(req.query)
       .then((result) => {
@@ -42,19 +42,6 @@ const productController = {
   //     });
   // },
 
-  // getDetail: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const result = await productModel.getDetail(id);
-
-  //     if (result.length <= 0) {
-  //       return `data by id ${id} not found`;
-  //     }
-  //     return `delete success`;
-  //   } catch (error) {
-  //     return res.send("Bad Request");
-  //   }
-  // },
   getDetail: (req, res) => {
     const id = req.params.id;
     const result = productModel
