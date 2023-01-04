@@ -1,5 +1,5 @@
-const { Client } = require("pg");
-require("dotenv").config(); //add .env syntax
+const { Client } = require('pg');
+require('dotenv').config(); // add .env syntax
 
 // console.log(process.env);
 // console.log("HOST: " + process.env.USER);
@@ -8,30 +8,27 @@ require("dotenv").config(); //add .env syntax
 // console.log("HOST: " + process.env.PASSWORD);
 // console.log("HOST: " + process.env.PORT);
 
-//deklarasi data dari .env
-const USER = process.env.USER;
+// deklarasi data dari .env
+// eslint-disable-next-line object-curly-newline
+const { USER, HOST, DATABASE, PASSWORD, PORT } = process.env;
 // console.log(USER);
-const HOST = process.env.HOST;
-const DATABASE = process.env.DATABASE;
-const PASSWORD = process.env.PASSWORD;
-const PORT = process.env.PORT;
 
 // koneksi ke postgres
 const db = new Client({
-  user: USER, //defaultnya postgres
+  user: USER, // defaultnya postgres
   host: HOST,
-  database: DATABASE, //nama database kita
-  password: PASSWORD, //master password
-  port: PORT, //port postgres
+  database: DATABASE, // nama database kita
+  password: PASSWORD, // master password
+  port: PORT, // port postgres
 });
 
 db.connect((err) => {
   if (err) {
-    console.log("db connection error", err);
+    console.log('db connection error', err);
   }
 });
 
-module.exports = db; //string yg bakal disini
+module.exports = db; // string yg bakal disini
 
 // alternatif
 // const client = new Client({
