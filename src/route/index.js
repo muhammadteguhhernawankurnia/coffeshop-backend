@@ -8,6 +8,8 @@ const productRoute = require('./product.route');
 
 // add users route
 const userRoute = require('./user.route');
+// add auth route
+const authRoute = require('./auth.route');
 
 router.get('/', (req, res) =>
   res.send('Backend server for coffee shop is running')
@@ -15,7 +17,7 @@ router.get('/', (req, res) =>
 // router use sama dengan get kurang lebih
 router.use('/products', productRoute);
 router.use('/users', userRoute);
-// router.use('/users', userRoute) nanti bikin sendiri
+router.use('/auth', authRoute);
 
 module.exports = router;
 // agar bisa dipake dipanggil keluar
