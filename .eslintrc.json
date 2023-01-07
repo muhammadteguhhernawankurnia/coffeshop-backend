@@ -16,7 +16,7 @@
     }
 }
 
-// keterangan:{
-//     no-console => console.log diperbolehkan,
-//     multiline => baris kode ke bawah diperbolehkan
-// }
+// keterangan:
+// no-console => console.log diperbolehkan
+// multiline => baris kode ke bawah diperbolehkan
+

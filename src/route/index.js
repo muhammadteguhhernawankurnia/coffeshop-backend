@@ -9,7 +9,9 @@ const productRoute = require('./product.route');
 // add users route
 const userRoute = require('./user.route');
 
-router.get('/', (req, res) => res.send('backend for coffee shop'));
+router.get('/', (req, res) =>
+  res.send('Backend server for coffee shop is running')
+);
 // router use sama dengan get kurang lebih
 router.use('/products', productRoute);
 router.use('/users', userRoute);
