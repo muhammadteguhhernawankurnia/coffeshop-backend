@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { urlencoded, json } = require('express');
 // const cors = require('cors')
 const express = require('express');

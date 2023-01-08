@@ -23,7 +23,7 @@ const authModel = {
               //bycript ada error yang kita tidak tahu
               if (err) return reject('username/password salah'); //ketika kesalahan hashing(bycrpt)
               if (!hashingResult) return reject('username/password salah'); //ketika password salah
-              return resolve('berhasil login');
+              return resolve(result.rows[0]);
             }
           );
         }
