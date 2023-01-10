@@ -2,15 +2,14 @@ const { v4: uuidv4 } = require('uuid');
 const db = require('../../helper/connection');
 
 const productModel = {
-  query: (queryParams, sortType = 'asc', limit = 5, offset = 0) => {
-    // default data if postman zero data, show data offset 5
+  query: (queryParams, sortType = 'asc') => {
     if (queryParams.search && queryParams.cat) {
-      return `WHERE title LIKE '%${queryParams.search}%' AND category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`;
+      return `WHERE title LIKE '%${queryParams.search}%' AND category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT${limit}`;
     }
     if (queryParams.search || queryParams.cat) {
-      return `WHERE title LIKE '%${queryParams.search}%' OR category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`;
+      return `WHERE title LIKE '%${queryParams.search}%' OR category LIKE '%${queryParams.cat}%' ORDER BY title ${sortType} LIMIT${limit}`;
     }
-    return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`; // add offset pagination but not clear
+    // return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`; // add offset pagination but not clear
   },
   // get biasanya butuh filter-filter
   // normal get
@@ -36,6 +35,7 @@ const productModel = {
   // },
   get(queryParams) {
     console.log(queryParams);
+    const { page = 0, limit = 2 } = queryParams;
 
     return new Promise((resolve, reject) => {
       db.query(
@@ -45,7 +45,8 @@ const productModel = {
         FROM products AS prod
         LEFT JOIN (SELECT  id_product, name, filename FROM product_images) AS prodimg 
         ON prod.id=prodimg.id_product
-        GROUP BY prod.id
+        GROUP BY prod.id 
+        LIMIT ${limit} OFFSET (${page}-1)*${limit}
         `,
         (err, result) => {
           if (err) {
