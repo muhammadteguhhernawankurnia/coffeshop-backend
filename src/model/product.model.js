@@ -13,17 +13,40 @@ const productModel = {
     return `ORDER BY title ${sortType} LIMIT ${limit} OFFSET ${offset}`; // add offset pagination but not clear
   },
   // get biasanya butuh filter-filter
+  // normal get
+  // get(queryParams) {
+  //   console.log(queryParams);
+
+  //   return new Promise((resolve, reject) => {
+  //     db.query(
+  //       `SELECT * FROM products ${this.query(
+  //         queryParams,
+  //         queryParams.sortBy,
+  //         queryParams.limit,
+  //         queryParams.page // add pagination
+  //       )}`,
+  //       (err, result) => {
+  //         if (err) {
+  //           return reject(err.message);
+  //         }
+  //         return resolve(result.rows);
+  //       }
+  //     );
+  //   });
+  // },
   get(queryParams) {
     console.log(queryParams);
 
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM products ${this.query(
-          queryParams,
-          queryParams.sortBy,
-          queryParams.limit,
-          queryParams.page // add pagination
-        )}`,
+        `SELECT 
+        prod.id, prod.title, prod.price, prod.category,
+        json_agg(row_to_json(prodimg)) images
+        FROM products AS prod
+        LEFT JOIN (SELECT  id_product, name, filename FROM product_images) AS prodimg 
+        ON prod.id=prodimg.id_product
+        GROUP BY prod.id
+        `,
         (err, result) => {
           if (err) {
             return reject(err.message);
@@ -44,18 +67,16 @@ const productModel = {
     }),
 
   add: ({ title, img, price, category, file }) => {
-    const uuidProduct = uuidv4();
     return new Promise((resolve, reject) => {
       db.query(
-        `INSERT INTO products (id, title, img, price, category) VALUES ('${uuidProduct}','${title}','${img}','${price}','${category}')`,
+        `INSERT INTO products (id, title, img, price, category) VALUES ('${uuidv4()}','${title}','${img}','${price}','${category}') RETURNING id`,
         (err, result) => {
           if (err) {
             return reject(err.message);
           } else {
-            const uuidImage = uuidv4();
             db.query(
               `INSERT INTO product_images (id_image, id_product, name, filename) VALUES ($1, $2, $3, $4)`,
-              [uuidImage, uuidProduct, title, file[0].filename]
+              [uuidv4(), result.rows[0].id, title, file[0].filename]
             );
             return resolve({
               title,

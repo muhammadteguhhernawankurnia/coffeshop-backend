@@ -8,6 +8,7 @@ const productController = require('../controller/product.controller');
 
 router.get('/', productController.get);
 router.get('/:id', productController.getDetail);
+// router.post('/', verifyToken, formUpload.single('img'), productController.add); // img dari column database
 router.post('/', verifyToken, formUpload.array('img'), productController.add); // img dari column database
 router.patch('/:id', verifyToken, productController.update);
 // delete diganti remove karena operator js
