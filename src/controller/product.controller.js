@@ -22,13 +22,23 @@ const productController = {
       .catch((error) => res.status(500).send({ message: error }));
   },
 
-  add: (req, res) =>
-    productModel
-      .add(req.body)
-      .then((result) =>
-        res.status(201).send({ message: 'success', data: result })
-      )
-      .catch((error) => res.status(500).send({ message: error })),
+  add: (req, res) => {
+    const request = {
+      ...req.body,
+      file: req.files,
+    };
+    console.log(req.files); //multiple
+    // console.log(req.file);//single
+    return productModel
+      .add(request)
+      .then((result) => {
+        res.status(201).send({ message: 'success', data: result });
+      })
+      .catch((error) => {
+        res.status(500).send({ message: error });
+      });
+  },
+
   update: (req, res) => {
     const request = {
       ...req.body,

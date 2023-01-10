@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
         }
         console.log(decoded);
       } else {
-        return res.statu(400).send({
+        return res.status(400).send({
           message: 'token tidak valid',
         });
       }
