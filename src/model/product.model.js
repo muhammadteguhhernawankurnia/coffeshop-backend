@@ -128,7 +128,7 @@ const productModel = {
           return reject(err.message);
         } else {
           db.query(
-            `SELECT * FROM product_images WHERE id_product='${id}'`,
+            `DELETE FROM product_images WHERE id_product='${id}' RETURNING filename`,
             (err, result) => {
               if (err) return reject({ message: 'gambar gagal dihapus' });
               return resolve(result.rows);
