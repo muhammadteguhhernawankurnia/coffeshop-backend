@@ -126,8 +126,16 @@ const productModel = {
       db.query(`DELETE from products WHERE id ='${id}'`, (err, result) => {
         if (err) {
           return reject(err.message);
+        } else {
+          db.query(
+            `SELECT * FROM product_images WHERE id_product='${id}'`,
+            (err, result) => {
+              if (err) return reject({ message: 'gambar gagal dihapus' });
+              return resolve(result.rows);
+            }
+          );
         }
-        return resolve('success delete data');
+        // return resolve('success delete data');
       });
     }),
 };

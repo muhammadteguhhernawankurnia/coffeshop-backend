@@ -1,4 +1,5 @@
 const productModel = require('../model/product.model');
+const { unlink } = require('node:fs');
 
 const productController = {
   get: (req, res) =>
@@ -52,17 +53,25 @@ const productController = {
       .catch((error) => res.status(500).send({ message: error }));
   },
 
-  // eksplorasi kalian done
   remove: (req, res) => {
-    const { id } = req.params;
-    const result = productModel
-      .remove(id)
-      .then((result) =>
-        res.status(200).send({
-          message: `success delete data id: ${id}`,
+    // const { id } = req.params;
+    // const result = productModel
+    //   .remove(id)
+    return productModel
+      .remove(req.params.id)
+      .then((result) => {
+        console.log(result[0].filename);
+        for (let index = 0; index < result.length; index++) {
+          unlink(`public/uploads/images/${result[index].filename}`, (err) => {
+            if (err) throw err;
+            console.log(`succesfully deleted ${result[index].filename}`);
+          });
+        }
+        return res.status(201).send({
+          message: 'success deleted',
           data: result,
-        })
-      )
+        });
+      })
       .catch((error) => res.status(500).send({ message: error }));
   },
 };

@@ -26,7 +26,9 @@ app.get(
   // res.sendFile('./index.html', { root: __dirname })
 );
 
-const port = 3000;
+//try heroku
+const port = process.env.PORT || 3000;
+// const port = 3000;
 app.listen(port, () => {
   console.log(`Server started running on port ${port}`);
 });
